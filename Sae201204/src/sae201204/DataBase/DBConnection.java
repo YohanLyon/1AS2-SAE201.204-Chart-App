@@ -33,13 +33,13 @@ public class DBConnection {
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");  
                     
-                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Weather", "root", "qwerty");
+                    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Weather", "AdminG", "AdminG");
                     this.con = this;
                     
                 } catch (Exception ex) {
-                    System.out.println("RaspBerry System");
                     System.out.println(ex);
                     JOptionPane.showMessageDialog(new JFrame(),"Base de données introuvable !","Erreur",JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             break;
             
@@ -52,6 +52,7 @@ public class DBConnection {
                     
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(new JFrame(),"Base de données introuvable !","Erreur",JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             break;
             

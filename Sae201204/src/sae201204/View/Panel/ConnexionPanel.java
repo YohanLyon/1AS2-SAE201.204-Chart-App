@@ -18,26 +18,23 @@ import javax.swing.JTextField;
  *
  * @author p2103678
  */
-public class InscriptionPanel extends JPanel{
+public class ConnexionPanel extends JPanel {
     
-    JLabel title = new JLabel("Inscription");
+    JLabel title = new JLabel("Connexion");
     
     JLabel pseudo = new JLabel("Pseudo : ");
     JLabel mdp= new JLabel("Mot de Passe : ");
-    JLabel mdpConfirm= new JLabel("Confirmer le Mot de Passe : ");
-    
+
     JTextField pseudoUser;
     JPasswordField mdpUser;
-    JPasswordField mdpConfirmUser;
     
     JButton confirm = new JButton("Valider");
     JButton back = new JButton("Retour");
     
-    public InscriptionPanel() {
+     public ConnexionPanel() {
         
         pseudoUser = new JTextField(15);
         mdpUser = new JPasswordField (15);
-        mdpConfirmUser = new JPasswordField (15);
         
         this.setLayout(new GridBagLayout());
         GridBagConstraints gc=new GridBagConstraints();
@@ -46,7 +43,7 @@ public class InscriptionPanel extends JPanel{
         gc.gridx=0;
         gc.gridy=0;
         gc.gridwidth = 2;
-        gc.insets = new Insets(0, 150, 35, 50);
+        gc.insets = new Insets(0, 100, 35, 50);
         this.add(title, gc);
         
         gc.gridx=0;
@@ -70,23 +67,13 @@ public class InscriptionPanel extends JPanel{
         gc.gridwidth = 1;
         this.add(mdpUser, gc);
         
-        gc.gridx=0;
-        gc.gridy=3;
-        gc.gridwidth = 1;
-        this.add(mdpConfirm, gc);
-        
         gc.gridx=1;
         gc.gridy=3;
-        gc.gridwidth = 1;
-        this.add(mdpConfirmUser, gc);
-        
-        gc.gridx=1;
-        gc.gridy=4;
         gc.gridwidth = 1;
         this.add(confirm, gc); 
         
         gc.gridx=0;
-        gc.gridy=4;
+        gc.gridy=3;
         gc.gridwidth = 1;
         this.add(back, gc); 
     }
@@ -103,12 +90,8 @@ public class InscriptionPanel extends JPanel{
         return new String(mdpUser.getPassword());
     }
 
-    public String getMdpConfirmUser() {
-        return new String(mdpConfirmUser.getPassword());
-    }
-
     public JButton getBack() {
         return back;
     }
-    
+
 }
