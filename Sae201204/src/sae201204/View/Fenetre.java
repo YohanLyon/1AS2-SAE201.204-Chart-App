@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;  
 import javax.swing.WindowConstants;  
@@ -34,11 +35,14 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;  
 import org.jfree.data.general.PieDataset;  
 import sae201204.Capteur.AnalogI2CInput;
+import sae201204.Capteur.CapteurCollect;
 import sae201204.Capteur.DHT22;
 import sae201204.DataBase.DBConnection;
 import sae201204.DataBase.Instance;
 import sae201204.View.Admin.CreateUser;
+import sae201204.View.Admin.DeleteUser;
 import sae201204.View.Admin.EditRole;
+import sae201204.View.Moderateur.ViewTableMesure;
 import sae201204.graph.Area;
 import sae201204.graph.Bar;
 import sae201204.graph.Line;
@@ -52,6 +56,7 @@ public class Fenetre extends JFrame implements ActionListener {
     private JMenuBar menu;
     
     private JMenu donnees;
+    private JMenu table;
     private JMenu onglet;
     private JMenu aleaOnglet;
     private JMenu capteur;
@@ -59,6 +64,8 @@ public class Fenetre extends JFrame implements ActionListener {
     
     private JMenuItem barGraphBd;
     private JMenuItem pieGraphBd;
+    private JMenuItem lineGraphBd;
+    private JMenuItem areaGraphBd;
     
     private JMenuItem barGraph;
     private JMenuItem pieGraph;
@@ -67,6 +74,10 @@ public class Fenetre extends JFrame implements ActionListener {
     
     private JMenuItem editRole;
     private JMenuItem createUser;
+    private JMenuItem deleteUser;
+    
+    private JMenuItem viewTable;
+    private JMenuItem restoreTable;
     
     private JMenuItem run;
     private JMenuItem stop;
@@ -82,7 +93,6 @@ public class Fenetre extends JFrame implements ActionListener {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(screenSize.width+10, screenSize.height-33));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        initialisationBD();
         initMenu();
   
         this.pack();
@@ -94,11 +104,17 @@ public class Fenetre extends JFrame implements ActionListener {
         
         barGraphBd.addActionListener(this);
         pieGraphBd.addActionListener(this);
+        lineGraphBd.addActionListener(this);
+        areaGraphBd.addActionListener(this);
         
         deconnect.addActionListener(this);
         
         editRole.addActionListener(this);
         createUser.addActionListener(this);
+        deleteUser.addActionListener(this);
+        
+        viewTable.addActionListener(this);
+        restoreTable.addActionListener(this);
         
         run.addActionListener(this);
         stop.addActionListener(this);
@@ -108,14 +124,17 @@ public class Fenetre extends JFrame implements ActionListener {
     private void initialisationBD() {
         if (ViewConnection.selectedPlateforme == 1) {
              
-                try {
-                    DBConnection.getConnectionBD().update("CREATE TABLE IF NOT EXISTS Mesure (ID  INT AUTO_INCREMENT, valeur_temp int, valeur_humidite int, localisation varchar(25), CONSTRAINT PK_Mesure PRIMARY KEY (ID))");
-                    
-                    
-                    
-                } catch (Exception ex) {
-                        return;
+            try {
+                DBConnection.getConnectionBD().update("CREATE TABLE IF NOT EXISTS Mesure (ID  INT AUTO_INCREMENT, date_mesure datetime, valeur_temp int, valeur_humidite int, localisation varchar(25), CONSTRAINT PK_Mesure PRIMARY KEY (ID))");
+
+                for (int i = 0; i < 15; i++) {
+                    Thread.sleep(1000);
+                    DBConnection.getConnectionBD().update("INSERT INTO Mesure VALUES (0,NOW(),\'"+(int) Math.random()*40+"\',\'"+(int) Math.random()*100+"\', \"Salle ln107\")");
                 }
+
+            } catch (Exception ex) {
+                    return;
+            }
             
         }
     }
@@ -124,6 +143,8 @@ public class Fenetre extends JFrame implements ActionListener {
         
         barGraphBd = new JMenuItem("BarGraphe");
         pieGraphBd = new JMenuItem("PieGraphe");
+        lineGraphBd = new JMenuItem("LineGraphe");
+        areaGraphBd = new JMenuItem("AreaGraphe");
 
         barGraph = new JMenuItem("BarGraphe");
         pieGraph = new JMenuItem("PieGraphe");
@@ -132,6 +153,10 @@ public class Fenetre extends JFrame implements ActionListener {
         
         createUser = new JMenuItem("Create User");
         editRole = new JMenuItem("Edit User");
+        deleteUser = new JMenuItem("Delete User");
+        
+        viewTable = new JMenuItem("View Table Mesure");
+        restoreTable = new JMenuItem("Reset Table Mesure");
         
         run = new JMenuItem("Start");
         stop = new JMenuItem("Stop");
@@ -140,6 +165,7 @@ public class Fenetre extends JFrame implements ActionListener {
         deconnect = new JMenuItem("Se Déconnecter");
         
         donnees = new JMenu("Admin");
+        table = new JMenu("Table");
         onglet = new JMenu("Base de données");
         aleaOnglet = new JMenu("Aléatoire");
         capteur = new JMenu("Capteur");
@@ -147,6 +173,8 @@ public class Fenetre extends JFrame implements ActionListener {
         
         onglet.add(barGraphBd);
         onglet.add(pieGraphBd);
+        onglet.add(lineGraphBd);
+        onglet.add(areaGraphBd);
         
         aleaOnglet.add(barGraph);
         aleaOnglet.add(pieGraph);
@@ -155,6 +183,10 @@ public class Fenetre extends JFrame implements ActionListener {
         
         donnees.add(createUser);
         donnees.add(editRole);
+        donnees.add(deleteUser);
+        
+        table.add(viewTable);
+        table.add(restoreTable);
         
         capteur.add(run);
         capteur.add(stop);
@@ -167,6 +199,9 @@ public class Fenetre extends JFrame implements ActionListener {
         
         if (Instance.role.equals("Admin")) {
             menu.add(donnees);
+        }
+        if (Instance.role.equals("Admin") || Instance.role.equals("Moderateur")) {
+            menu.add(table);
         }
         menu.add(onglet);
         menu.add(aleaOnglet);
@@ -210,71 +245,67 @@ public class Fenetre extends JFrame implements ActionListener {
             
             try {
                 
-                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Professeurs");
-                int m = 0;
-                int f = 0;
-                while(rs.next()) {
-                    if (rs.getString(4).equals("F")) {
-                        f++;
-                    } else {
-                        m++;
-                    }
-                }
+                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Mesure");
+                Pie graph = new Pie(rs);
                 
-                DefaultPieDataset dataset=new DefaultPieDataset();  
-
-                dataset.setValue("Femmes", f);  
-                dataset.setValue("Hommes", m); 
-
-                JFreeChart chart = ChartFactory.createPieChart3D(  
-                    "EDT Professeurs Pie Chart",
-                    dataset,
-                    true,
-                    true,
-                    false);  
-
-                PiePlot plot = (PiePlot) chart.getPlot();
-                plot.setStartAngle(290);
-                plot.setForegroundAlpha(0.5f);
-
-                ChartPanel panel = new ChartPanel(chart);  
-
-                setContentPane(panel);  
+                setContentPane(graph.getPanel());  
                 this.revalidate();
-                        
-            } catch (Exception ex) { } 
-            
+
+            } catch (Exception ex) { 
+                initialisationBD();
+                JOptionPane.showMessageDialog(new JFrame(),"Aucune données","Erreur",JOptionPane.ERROR_MESSAGE);
+                return;
+            } 
             
         }
         if (e.getSource() == barGraphBd) {
-            try {
+             try {
                 
-                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Professeurs");
-                int m = 0;
-                int f = 0;
-                while(rs.next()) {
-                    if (rs.getString(4).equals("F")) {
-                        f++;
-                    } else {
-                        m++;
-                    }
-                }
-
-                DefaultCategoryDataset dataset = new DefaultCategoryDataset( ); 
-            
-                int randint = (int) (Math.random() * 100);
-
-                dataset.addValue(f, "Femme", "Genre");
-                dataset.addValue(m, "Homme", "Genre");
+                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Mesure");
+                Bar graph = new Bar(rs);
                 
-                JFreeChart chart = ChartFactory.createBarChart3D("EDT Professeurs Bar Chart", "Population", "Nombre", dataset);
-                
-                ChartPanel panel = new ChartPanel(chart);  
-                setContentPane(panel);  
+                setContentPane(graph.getPanel());  
                 this.revalidate();
 
-                } catch (Exception ex) { } 
+            } catch (Exception ex) {
+                initialisationBD();
+                JOptionPane.showMessageDialog(new JFrame(),"Aucune données","Erreur",JOptionPane.ERROR_MESSAGE);
+                return;
+            } 
+        }   
+        if (e.getSource() == lineGraphBd) {
+            
+            try {
+                
+                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Mesure");
+                Line graph = new Line(rs);
+                
+                setContentPane(graph.getPanel());  
+                this.revalidate();
+
+            } catch (Exception ex) { 
+                initialisationBD();
+                JOptionPane.showMessageDialog(new JFrame(),"Aucune données","Erreur",JOptionPane.ERROR_MESSAGE);
+                return;
+            } 
         }
+        if (e.getSource() == areaGraphBd) {
+            
+            try {
+                
+                ResultSet rs= DBConnection.getConnectionBD().get("SELECT * FROM Mesure");
+                Area graph = new Area(rs);
+                
+                setContentPane(graph.getPanel());  
+                this.revalidate();
+
+            } catch (Exception ex) { 
+                initialisationBD();
+                JOptionPane.showMessageDialog(new JFrame(),"Aucune données","Erreur",JOptionPane.ERROR_MESSAGE);
+                return;
+            } 
+        }
+       
         
         if (e.getSource() == deconnect) {
             Instance.pseudo = "Visiteur";
@@ -301,28 +332,44 @@ public class Fenetre extends JFrame implements ActionListener {
             this.revalidate();
         }
         
+        if (e.getSource() == deleteUser) {
+            
+            sae201204.View.Admin.DeleteUser win = new DeleteUser();
+            win.setVisible(true);
+            
+            this.revalidate();
+        }
+        
         if (e.getSource() == stop) {
             DHT22.started = false;
         }
         
         if (e.getSource() == run) {
             DHT22.started = true;
+           
+            CapteurCollect thread = new CapteurCollect();
+            thread.start();
+        }
+        
+        if (e.getSource() == viewTable) {
+            sae201204.View.Moderateur.ViewTableMesure win = new ViewTableMesure();
+            win.setVisible(true);
+            
+            this.revalidate();
+        }
+        
+        if (e.getSource() == restoreTable) {
             
             try {
-                AnalogI2CInput an = new AnalogI2CInput(0);
+                DBConnection.getConnectionBD().update("DROP TABLE IF  EXISTS Mesure");
+                DBConnection.getConnectionBD().update("CREATE TABLE IF NOT EXISTS Mesure (ID  INT AUTO_INCREMENT, date_mesure datetime, valeur_temp int, valeur_humidite int, localisation varchar(25), CONSTRAINT PK_Mesure PRIMARY KEY (ID))");
+
             } catch (Exception ex) {
-                System.out.println(ex);
+                return;
             }
-            DHT22 dht22 = new DHT22(5);
-        
-            for (int i = 0; i < 50; i++) {
-                try {
-                    Thread.sleep(1000);
-                    dht22.getTemperatureAndHumidity();
-                } catch (Exception ex) {
-                    System.out.println(ex);
-                }
-            }
+            
+            JOptionPane.showMessageDialog(new JFrame(),"Base de données rénitialisée","Success",JOptionPane.INFORMATION_MESSAGE);
+            this.revalidate();
         }
     }
 }

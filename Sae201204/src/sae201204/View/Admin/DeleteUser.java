@@ -16,12 +16,12 @@ import sae201204.DataBase.Instance;
  *
  * @author p2103678
  */
-public class EditRole extends javax.swing.JFrame {
+public class DeleteUser extends javax.swing.JFrame {
 
     /**
-     * Creates new form EditRole
+     * Creates new form DeleteUser
      */
-    public EditRole() {
+    public DeleteUser() {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Gestion et Administration");
@@ -59,7 +59,6 @@ public class EditRole extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -82,14 +81,13 @@ public class EditRole extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Modifier");
+        jButton1.setText("Supprimer");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Visiteur", "Moderateur", "Admin" }));
 
         jTextField1.setText("Inserez le pseudo du membre");
         jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -109,7 +107,6 @@ public class EditRole extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(29, Short.MAX_VALUE))
@@ -120,7 +117,6 @@ public class EditRole extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,11 +132,11 @@ public class EditRole extends javax.swing.JFrame {
             ResultSet rsLogin2 = DBConnection.getConnectionBD().get(strInsert2);
             if (rsLogin2.next()) {
                 if (Instance.pseudo.equals(rsLogin2.getString("pseudo"))) {
-                    JOptionPane.showMessageDialog(new JFrame(),"Vous ne pouvez pas vous modifier vous-même","Erreur",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(),"Vous ne pouvez pas vous supprimer vous-même","Erreur",JOptionPane.ERROR_MESSAGE);
                     return;
                 }
             } 
-            DBConnection.getConnectionBD().update("UPDATE UserData set roles=\'"+jComboBox1.getSelectedItem().toString()+"\' WHERE pseudo=\'"+jTextField1.getText().trim()+"\'"); 
+            DBConnection.getConnectionBD().update("DELETE FROM UserData WHERE pseudo=\'"+jTextField1.getText().trim()+"\'"); 
         } catch (Exception ex) {
             return;
         }  
@@ -173,7 +169,7 @@ public class EditRole extends javax.swing.JFrame {
         
         jTable1.setModel(model);
         
-        JOptionPane.showMessageDialog(new JFrame(),"Rôle modifié","Success",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(new JFrame(),"Utilisateur supprimé","Success",JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
@@ -197,30 +193,27 @@ public class EditRole extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditRole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditRole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditRole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditRole.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditRole().setVisible(true);
+                new DeleteUser().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;

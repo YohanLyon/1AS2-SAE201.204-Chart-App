@@ -96,7 +96,7 @@ public class InscriptionPanel extends JPanel{
     }
 
     public String getPseudoUser() {
-        return pseudoUser.getText();
+        return pseudoUser.getText().trim();
     }
 
     public String getMdpUser() {

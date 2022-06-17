@@ -83,7 +83,7 @@ public class ConnexionPanel extends JPanel {
     }
 
     public String getPseudoUser() {
-        return pseudoUser.getText();
+        return pseudoUser.getText().trim();
     }
 
     public String getMdpUser() {
