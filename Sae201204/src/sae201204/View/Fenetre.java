@@ -48,6 +48,10 @@ import sae201204.graph.Bar;
 import sae201204.graph.Line;
 import sae201204.graph.Pie;
 
+/**
+ * Cette classe est la classe mère de l'application. Elle représente le menu principal d'affichage
+ * et de paramettrage des différentes fonctions de l'application
+ */
 
 public class Fenetre extends JFrame implements ActionListener {
     
@@ -85,6 +89,11 @@ public class Fenetre extends JFrame implements ActionListener {
     private JMenuItem roleUser;
     private JMenuItem deconnect;
     
+    /**
+     * Ce constructeur par défaut instancie la Fenetre de base de l'application en
+     * lui définissant sa taille, sa fermeture ainsi que tous ses composants.
+     */
+    
     public Fenetre() {
         
         super("SAE 201-204");  
@@ -120,7 +129,10 @@ public class Fenetre extends JFrame implements ActionListener {
         stop.addActionListener(this);
         
     }
-    
+    /**
+     * Cette méthode permet la création de données aléatoire dans la base p2103678 en créant la table mesure et en
+     * y inserant des données aléatoires. Si la table est déjà créé, elle y ajoute des données.
+     */
     private void initialisationBD() {
         if (ViewConnection.selectedPlateforme == 1) {
              
@@ -139,6 +151,10 @@ public class Fenetre extends JFrame implements ActionListener {
         }
     }
     
+    /**
+     * Cette méthode permet d'initialiser tous les menus de l'applications en leur indiquant
+     * leur noms, leurs sous-menu et la menu bar.
+     */
     private void initMenu(){
         
         barGraphBd = new JMenuItem("BarGraphe");
@@ -212,6 +228,14 @@ public class Fenetre extends JFrame implements ActionListener {
         
         this.setJMenuBar(menu);
     }
+    
+    /**
+     * Cette méthod est une surcharge permettant de récupérer l'evenement d'un clic sur un bouton
+     * si celui si a eu un actionPerformed ajouté dans son constructeur. Elle gère nottament les graphiques 
+     * les gestions d'utilisateur et de table.
+     * Elle implemente les Panel ou Fenetre de chacun des menu définit dans initmenu
+     * @param e Event
+     */
     
     @Override
     public void actionPerformed(ActionEvent e) {

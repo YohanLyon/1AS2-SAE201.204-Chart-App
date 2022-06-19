@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.DataBase;
 
 import java.sql.Connection;
@@ -15,8 +10,7 @@ import javax.swing.JOptionPane;
 import sae201204.View.ViewConnection;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet la connexion à la Base de données selon la plateforme utilisée
  */
 
 public class DBConnection {
@@ -25,7 +19,11 @@ public class DBConnection {
     public static DBConnection con = null;
     private int plateforme = ViewConnection.selectedPlateforme;
     
-    private String base = new String("Weather");
+    /**
+     * Ce constructeur par défaut va initialisé la connexion en fonction de la plateforme
+     * voulu. Elle dépend donc de la Classe ViewConnexion. En cas de problème de connexion
+     * à la abse de données, elle affiche un message sur l'interface utilisateur.
+     */
 
     private DBConnection() {
         switch (this.plateforme) {
@@ -61,8 +59,15 @@ public class DBConnection {
                 JOptionPane.showMessageDialog(new JFrame(),"Pas de base de données définit pour cette plateforme !","Erreur",JOptionPane.ERROR_MESSAGE);
             break;
         }
-
     }
+    
+    /**
+     * Cette méthode permet de vérifier si il y a déjà une Instance de la connexion qui a été créée.
+     * Dans le cas contraire, elle l'a créée sinon elle la retourne.
+     * @return DBConnection
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
 
     public static DBConnection getConnectionBD() throws ClassNotFoundException, SQLException{
         if(con == null){
@@ -70,6 +75,13 @@ public class DBConnection {
         }
         return con;
     }
+    
+    /**
+     * Cette méthode permet d'obtenir un retour d'une fonction SQL de lecture de table.
+     * Elle est donc utilisé simplement pour visualiser les données de la base.
+     * @param requetteSQL Requete SQL de lecture
+     * @return ResultSet
+     */
     
     public ResultSet get(String requetteSQL){
         try {
@@ -81,6 +93,11 @@ public class DBConnection {
         return null;
     }
     
+    /**
+     * Cette méthode permet le traitement de toutes les requetes SQL de modification de table, de base ou de ligne.
+     * Elle conserne les INSERT, UPDATE, CREATE, DELETE et ALTER
+     * @param requetteSQL Requete SQL de modification
+     */
     public void update(String requetteSQL){
         try {
             Statement stmt = connection.createStatement();
@@ -89,11 +106,18 @@ public class DBConnection {
             System.out.println(ex);
         }
     }
-
+    /**
+     * Cette méthode permet d'obtenir la connection à la base de données
+     * @return Connection
+     */
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Cette méthode permet de fermer la connexion à la base.
+     * @throws SQLException 
+     */
     public void destroy() throws SQLException {
         connection.close();
     }

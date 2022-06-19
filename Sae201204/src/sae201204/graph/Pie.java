@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.graph;
 
 import java.sql.ResultSet;
@@ -14,13 +9,15 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet de créer un diagramme de type Pie
  */
 public class Pie {
     
     private ChartPanel panel;
     
+    /**
+     * Ce constructeur crée un  diagramme avec des valeurs aléatoires
+     */
     public Pie() {
         
         DefaultPieDataset dataset=new DefaultPieDataset();  
@@ -43,6 +40,10 @@ public class Pie {
         this.panel = new ChartPanel(chart);
     }
     
+    /**
+     * Ce constructeur crée un diagramme en fonction des résultats d'une base de données
+     * @param rs Resultat d'une requete SQL
+     */
     public Pie(ResultSet rs) {
         try {
             int i = 0;
@@ -78,6 +79,10 @@ public class Pie {
         
     }
 
+    /**
+     * Cette méthode retourne le pannel du diagramme
+     * @return ChartPanel
+     */
     public ChartPanel getPanel() {
         return panel;
     }

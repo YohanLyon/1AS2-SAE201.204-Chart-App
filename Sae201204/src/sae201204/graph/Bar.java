@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.graph;
 
 import java.sql.ResultSet;
@@ -14,12 +9,15 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet de créer un diagramme de type Bar
  */
 public class Bar {
     
     private ChartPanel panel;
+    
+    /**
+     * Ce constructeur crée un  diagramme avec des valeurs aléatoires
+     */
     
     public Bar() {
         
@@ -40,6 +38,10 @@ public class Bar {
         this.panel = new ChartPanel(chart);
     }
 
+    /**
+     * Ce constructeur crée un diagramme en fonction des résultats d'une base de données
+     * @param rs Resultat d'une requete SQL
+     */
     public Bar(ResultSet rs) {
         try {
             int i = 0;
@@ -77,6 +79,10 @@ public class Bar {
         } catch (Exception ex) {}
     }
     
+    /**
+     * Cette méthode retourne le pannel du diagramme
+     * @return ChartPanel
+     */
     public ChartPanel getPanel() {
         return panel;
     }

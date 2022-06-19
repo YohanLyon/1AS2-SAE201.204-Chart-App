@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.graph;
 
 import java.sql.ResultSet;
@@ -12,12 +7,14 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet de créer un diagramme de type Line
  */
 public class Line {
     private ChartPanel panel;
     
+    /**
+     * Ce constructeur crée un  diagramme avec des valeurs aléatoires
+     */
     public Line() {
         
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( ); 
@@ -34,6 +31,10 @@ public class Line {
         this.panel = new ChartPanel(chart);
     }
     
+    /**
+     * Ce constructeur crée un diagramme en fonction des résultats d'une base de données
+     * @param rs Resultat d'une requete SQL
+     */
     public Line(ResultSet rs) {
         try {
             
@@ -54,6 +55,10 @@ public class Line {
         } catch (Exception ex) {}
     }
 
+    /**
+     * Cette méthode retourne le pannel du diagramme
+     * @return ChartPanel
+     */
     public ChartPanel getPanel() {
         return panel;
     }

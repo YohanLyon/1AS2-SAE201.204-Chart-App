@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.View;
 
 import java.awt.Dimension;
@@ -30,8 +25,9 @@ import sae201204.View.Panel.ConnexionPanel;
 import sae201204.View.Panel.InscriptionPanel;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet de gérer lesconnexion et inscription utilisateurs 
+ * afin d'instancier la Classe Instance et d'inserer les données propices
+ * cans la table UserData
  */
 public class ViewConnection extends JFrame implements ActionListener {
     
@@ -44,6 +40,11 @@ public class ViewConnection extends JFrame implements ActionListener {
     JPanel defaultPano;
     
     public static int selectedPlateforme;
+    
+    /**
+     * Ce constructeur permet l'instanciation de la fenetre vu par défaut demandant un choix de plateforme
+     * et un type de connexion utilisateur
+     */
     
     public ViewConnection() {
         super("Connexion");  
@@ -61,6 +62,10 @@ public class ViewConnection extends JFrame implements ActionListener {
         this.pano2.getBack().addActionListener(this);
     }
     
+    /**
+     * Cette méthode permet d'initialiser les composant de la fenetre
+     */
+    
     private void initialisation() {
         title = new JLabel("Rejoignez-nous");
         inscription = new JButton("Inscription");
@@ -73,6 +78,10 @@ public class ViewConnection extends JFrame implements ActionListener {
         graphPlacement();
     }
     
+    /**
+     * Cette méthode permet de placer chacun des élément de la fenètre dans la fenètre selon les contraintes
+     * établises
+     */
     private void graphPlacement() {
         
         JPanel pano=new JPanel();
@@ -105,7 +114,12 @@ public class ViewConnection extends JFrame implements ActionListener {
         this.defaultPano = pano;
         this.setContentPane(pano);
     }
-
+    /**
+     * Cette méthode permet la gestion d'evennement des differents boutons d'inscription
+     * ou de connexion afin d'enregistrer les différents utilisateur dans la base.
+     * Elle agit selon les contrainte de connexion habituelles
+     * @param e Event
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == inscription) {
@@ -133,7 +147,7 @@ public class ViewConnection extends JFrame implements ActionListener {
                 this.dispose();
             }
         }
-        
+
         if (e.getSource() == this.pano.getConfirm()) {
             
             if (this.selectedPlateforme != 2) {

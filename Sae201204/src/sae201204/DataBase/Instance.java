@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.DataBase;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet de sauvegarder les données utilisateurs en cours d'utilisation pour l'application
+ * Elle permet la gestion de rôle d'utilisateur.
  */
 public class Instance {
     public static String pseudo = "Visiteur";

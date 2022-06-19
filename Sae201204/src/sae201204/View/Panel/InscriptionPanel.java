@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.View.Panel;
 
 import java.awt.GridBagConstraints;
@@ -15,8 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet d'initialiser un panel d'inscription utilisateur
  */
 public class InscriptionPanel extends JPanel{
     
@@ -32,6 +26,10 @@ public class InscriptionPanel extends JPanel{
     
     JButton confirm = new JButton("Valider");
     JButton back = new JButton("Retour");
+    
+    /**
+     * Ce constructeur initialise les elements du pannel et les place dans la fenetre selon les containtes exposé
+     */
     
     public InscriptionPanel() {
         
@@ -90,23 +88,43 @@ public class InscriptionPanel extends JPanel{
         gc.gridwidth = 1;
         this.add(back, gc); 
     }
-
+    
+    /**
+     * Cette méthode permet de récuperer le bouton de validation
+     * @return JButton
+     */
     public JButton getConfirm() {
         return confirm;
     }
 
+    /**
+     * Cette méthode permet de récuperer le pseudo
+     * @return String
+     */
     public String getPseudoUser() {
         return pseudoUser.getText().trim();
     }
 
+    /**
+     * Cette méthode permet de récuperer le mot de passe
+     * @return String
+     */
     public String getMdpUser() {
         return new String(mdpUser.getPassword());
     }
 
+    /**
+     * Cette méthode permet de récuperer le mot de passe de confirmation
+     * @return String
+     */
     public String getMdpConfirmUser() {
         return new String(mdpConfirmUser.getPassword());
     }
 
+    /**
+     * Cette méthode permet de récuperer le bouton retour
+     * @return JButton
+     */
     public JButton getBack() {
         return back;
     }

@@ -1,15 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.DataBase;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet la création d'utilisateur dans la base de donnée du RaspBerry
+ * Elle agit selon les objectifs donnés pour la Base de donnée et donne les permissions 
+ * utilisateur demandé.
  */
 public class CreateUser {
+    
+    /**
+     * Ce constructeur permet l'initialisation d'utilisateur dans la base de données du
+     * Raspberry permettant ainsi l'acces direct à la base.
+     * @param pseudo Pseudo de l'utilisateur
+     * @param mdp Mot de passe de l'utilisateur
+     * @param role Role de l'utilisateur
+     */
+    
     public CreateUser(String pseudo, String mdp, String role) {
         try {
 

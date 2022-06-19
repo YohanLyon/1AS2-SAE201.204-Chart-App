@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sae201204.View.Panel;
 
 import java.awt.GridBagConstraints;
@@ -15,8 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
- *
- * @author p2103678
+ * Cette classe permet d'initialiser le panel de connexion utilisateur.
  */
 public class ConnexionPanel extends JPanel {
     
@@ -30,6 +24,10 @@ public class ConnexionPanel extends JPanel {
     
     JButton confirm = new JButton("Valider");
     JButton back = new JButton("Retour");
+    
+    /**
+     * Ce constructeur initialise les élément du pannel et les place de manière graphique dans la fenetre
+     */
     
      public ConnexionPanel() {
         
@@ -77,19 +75,35 @@ public class ConnexionPanel extends JPanel {
         gc.gridwidth = 1;
         this.add(back, gc); 
     }
-
+     
+    /**
+     * Cette méthode permet de recuperer le bouton
+     * @return JButton
+     */
     public JButton getConfirm() {
         return confirm;
     }
 
+    /**
+     * Cette méthode permet de recuperer le pseudo
+     * @return String
+     */
     public String getPseudoUser() {
         return pseudoUser.getText().trim();
     }
 
+    /**
+     * Cette méthode permet de recuperer le mot de passe
+     * @return String
+     */
     public String getMdpUser() {
         return new String(mdpUser.getPassword());
     }
 
+    /**
+     * Cette méthode permet de recuperer le bouton retour
+     * @return JButton
+     */
     public JButton getBack() {
         return back;
     }

@@ -1,14 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package sae201204.Capteur;
 
 /**
- *
- * @author Yohangoku
+ *  Cette classe permet l'excecution du capteur de manière asynchrone
+ * 
  */
 public class CapteurCollect extends Thread {
+    /**
+     * La méthode run est excecuté au lancement du thread. Le code présent dans cette fonction sera excecuté 
+     * de manière asynchrone au programme principal
+     * La méthode va instancier un port de capteur pour le lire de manière Analogue.
+     * Tant que la recolte de données ne passe pas à false, le capteur continura 
+     * de recolter les données de température et d'humidité
+     */
     public void run() {
         
         try {
